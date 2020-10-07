@@ -1,8 +1,8 @@
 import pygame
 
-from gerasimov_itis_python2k_11900.project.Breakpoint.Ball import Ball
-from gerasimov_itis_python2k_11900.project.Breakpoint.Mobs import Mobs
-from gerasimov_itis_python2k_11900.project.Breakpoint.Player import Player
+from gerasimov_itis_python2k_11900.project.Breakout.Ball import Ball
+from gerasimov_itis_python2k_11900.project.Breakout.Mobs import Mobs
+from gerasimov_itis_python2k_11900.project.Breakout.Player import Player
 
 pygame.init()
 pygame.mixer.init()
@@ -27,14 +27,15 @@ ball = pygame.sprite.Group()
 
 player = Player()
 bal = Ball(RED)
-bal.rect.x = 490
-bal.rect.y = 500
+bal.rect.x = 380
+bal.rect.y = 460
+bal.bouncy(-180)
 
 all_sprites.add(player)
 all_sprites.add(bal)
 all_bricks = pygame.sprite.Group()
 
-lives = 3
+lives = 5
 
 for i in range(7):
     m = Mobs(YELLOW, 80, 30)
@@ -59,6 +60,7 @@ for i in range(7):
     all_bricks.add(m)
 
 game_end = True
+start_game = False
 while game_end:
     events = pygame.event.get()
     for event in events:
@@ -66,46 +68,73 @@ while game_end:
             game_end = False
             exit()
 
-    all_sprites.update()
+    key = pygame.key.get_pressed()
 
-    if bal.rect.y > H - 9:
-        lives -= 1
-        bal.rect.x = 300
-        bal.rect.y = 300
-        if lives == 0:
-            f1 = pygame.font.SysFont('arial', 70)
-            text = f1.render("GAME OVER", 1, RED)
-            sc.fill(BLACK)
-            sc.blit(text, (250, 300))
-            pygame.display.flip()
-            pygame.time.wait(1000)
-            game_end = False
-            exit()
+    if key[pygame.K_SPACE]:
+        start_game = True
 
-    if pygame.sprite.collide_mask(player,bal):
-        diff = (player.rect.x + player.width / 2) - (bal.rect.x + bal.width / 2)
+    if start_game:
+        all_sprites.update()
 
-        bal.rect.y = H - player.rect.height - bal.rect.height-1
+        if bal.rect.y > H - 10:
+            lives -= 1
 
-        bal.bouncy(diff)
+            start_game = False
+            bal.x = 380
+            bal.y = 460
+            player.rect.x = W // 2 - 25
+            bal.direction = 200
+            bal.bouncy(-180)
+            all_sprites.update()
+            all_sprites.draw(sc)
 
-    break_collision = pygame.sprite.spritecollide(bal, all_bricks, False)
-    for brick in break_collision:
-        brick.kill()
-        if len(all_bricks) > 0:
-            bal.bouncy(0)
-        if len(all_bricks) == 0:
-            f2 = pygame.font.SysFont('arial', 60)
-            text = f2.render("Level Complete", 1, WHITE)
-            sc.blit(text, (200, 300))
-            pygame.display.flip()
-            pygame.time.wait(3000)
+            if lives == 0:
+                f1 = pygame.font.SysFont('arial', 70)
+                text = f1.render("GAME OVER", 1, RED)
+                sc.fill(BLACK)
+                sc.blit(text, (250, 300))
+                pygame.display.flip()
+                pygame.time.wait(1000)
+                game_end = False
+                exit()
 
-            game_end = False
-            exit()
+        if pygame.sprite.collide_mask(player, bal):
+            diff = (player.rect.x + player.width / 2) - (bal.rect.x + bal.width / 2)
+
+            bal.rect.y = H - player.rect.height - bal.rect.height - 2
+
+            bal.bouncy(diff)
+
+        break_collision = pygame.sprite.spritecollide(bal, all_bricks, False)
+
+        for brick in break_collision:
+            if len(all_bricks) > 0:
+                bal.bouncy(0)
+            if pygame.sprite.collide_mask(bal, brick):
+                bal.bouncy(-90)
+            brick.kill()
+
+            if len(all_bricks) == 0:
+                f2 = pygame.font.SysFont('arial', 60)
+                text = f2.render("Level Complete", 1, WHITE)
+                sc.blit(text, (200, 300))
+                pygame.display.flip()
+                pygame.time.wait(1000)
+
+                game_end = False
+                exit()
 
     sc.fill(BLACK)
     all_sprites.draw(sc)
+
+    if not start_game:
+        f4 = pygame.font.SysFont('arial', 40)
+        text4 = f4.render("Press space to start", 1, BLUE)
+        sc.blit(text4, (250, 300))
+
+    f3 = pygame.font.SysFont('arial', 32)
+    text3 = f3.render("Lifes" + str(lives), 1, BLUE)
+    sc.blit(text3, (50, 10))
 
     pygame.display.flip()
     clock.tick(FPS)

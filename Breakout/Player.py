@@ -25,9 +25,9 @@ class Player(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
         self.screenheight = pygame.display.get_surface().get_height()
-        self.rect.x = W // 2
+        self.rect.x = W // 2 -25
         self.rect.y = self.screenheight - self.height
-        self.speed = 8
+        self.speed = 12
 
     def update(self):
         key = pygame.key.get_pressed()
@@ -36,9 +36,9 @@ class Player(pygame.sprite.Sprite):
             self.rect.x += self.speed
         if key[pygame.K_LEFT] or key[pygame.K_a]:
             self.rect.x -= self.speed
-        else:
-            pos = pygame.mouse.get_pos()
-            self.rect.x = pos[0]
+        # else:
+        #     pos = pygame.mouse.get_pos()
+        #     self.rect.x = pos[0]
 
         if self.rect.left < 0:
             self.rect.left = 0

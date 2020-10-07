@@ -17,8 +17,8 @@ YELLOW = (255, 255, 0)
 class Ball(pygame.sprite.Sprite):
     direction = 200
     speed = 10
-    x = 0.0
-    y = 180.0
+    x = 380.0
+    y = 460.0
 
     width = 20
     height = 20
@@ -33,6 +33,8 @@ class Ball(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.screenheight = pygame.display.get_surface().get_height()
         self.screenwidth = pygame.display.get_surface().get_width()
+        self.rect.x = self.x
+        self.rect.y = self.y
 
     def bouncy(self, diff):
         self.direction = (180 - self.direction) % 360
@@ -50,9 +52,6 @@ class Ball(pygame.sprite.Sprite):
         if self.y <= 0:
             self.bouncy(0)
             self.y = 1
-        if self.y >= H - 10:
-            self.y = H - 100
-            self.bouncy(0)
 
         if self.x <= 0:
             self.direction = (360 - self.direction) % 360
