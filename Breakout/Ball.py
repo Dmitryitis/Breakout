@@ -29,7 +29,7 @@ class Ball(pygame.sprite.Sprite):
         self.image.fill(BLACK)
         self.image.set_colorkey(BLACK)
 
-        pygame.draw.rect(self.image, color, (0, 0, self.width, self.height))
+        pygame.draw.circle(self.image, color, (10, 10), 10)
         self.rect = self.image.get_rect()
         self.screenheight = pygame.display.get_surface().get_height()
         self.screenwidth = pygame.display.get_surface().get_width()
@@ -39,8 +39,17 @@ class Ball(pygame.sprite.Sprite):
     def bouncy(self, diff):
         self.direction = (180 - self.direction) % 360
         self.direction -= diff
+        print(self.direction)
+
+    def speed_bot(self):
+        key = pygame.key.get_pressed()
+        if key[pygame.K_SPACE]:
+            self.speed = 18
+        else:
+            self.speed = 10
 
     def update(self):
+        self.speed_bot()
         direction_radians = math.radians(self.direction)
 
         self.x += self.speed * math.sin(direction_radians)

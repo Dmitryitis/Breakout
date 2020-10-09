@@ -18,6 +18,15 @@ class Mobs(pygame.sprite.Sprite):
         self.image = pygame.Surface((width, height))
         self.image.fill(BLACK)
         self.image.set_colorkey(BLACK)
+        self.color = color
         pygame.draw.rect(self.image, color, (0, 0, width, height))
 
         self.rect = self.image.get_rect()
+
+    def score_update(self):
+        score_up = 5
+        if self.color == RED:
+            score_up = 15
+        if self.color == YELLOW:
+            score_up = 10
+        return score_up
