@@ -54,14 +54,14 @@ pygame.init()
 sc = pygame.display.set_mode((W, H))
 clock = pygame.time.Clock()
 
-
-br_surf = pygame.image.load(r'images\2.png')
-br_scale = pygame.transform.scale(br_surf, ((int)(br_surf.get_width() * 1.50 * (int)(W / 800)),
+def making_picture(sc):
+    br_surf = pygame.image.load(r'images\2.png')
+    br_scale = pygame.transform.scale(br_surf, ((int)(br_surf.get_width() * 1.50 * (int)(W / 800)),
                                             (int)(br_surf.get_height() * 1.50) * (int)(H / 600)))
-br_rect = br_scale.get_rect(bottomleft=(0, H))
-sc.blit(br_scale, br_rect)
+    br_rect = br_scale.get_rect(bottomleft=(0, H))
+    sc.blit(br_scale, br_rect)
 
-
+making_picture(sc)
 #иконка START
 surf_start_x = p1_s[0]
 surf_start_y = p2_s[1]
@@ -123,6 +123,7 @@ while True:
         if flag:
             #запуск текущего уровня
             print(1)
+            flag = False
         motion = ON_START
     elif (pos[0] >=  p1_l[0] and pos[0] <= p4_l[0] and pos[1] >= p2_l[1] and pos[1] <= p6_l[1]) \
             or (pos[0] <= p1_l[0] and  pos[1] >= p2_l[1] and not isPointUnder(p1_l, p2_l, pos)) \
@@ -133,7 +134,10 @@ while True:
             print(1)
             levels = Levels(sc, W, H)
             levels.update()
+            sc.fill(BLACK)
+            making_picture(sc)
             pygame.display.update()
+            flag = False
         motion = ON_LEVELS
     else:
         motion = NOT
