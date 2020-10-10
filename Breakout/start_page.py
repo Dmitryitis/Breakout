@@ -1,11 +1,13 @@
 import pygame
 
+from Breakout.Levels import Levels
+
+
 def isPointUnder(p1, p2, p):
     k = (p1[1] - p2[1]) / (p1[0] - p2[0])
     b = p1[1] - k * p1[0]
     if k * p[0] + b < p[1]:
         return True
-
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -39,7 +41,6 @@ p4_s = [W - otstW, t_middle]
 p5_s = [W - otstW - dW, t_middle + dH]
 p6_s = [otstW + dW, t_middle + dH]
 
-
 p1_l = [dW_sm * 5, H - dH * 2]
 p2_l = [otstW + dW, H - dH * 2 - dH_sm]
 p3_l = [W - otstW - dW, H - dH * 2 - dH_sm]
@@ -54,7 +55,7 @@ sc = pygame.display.set_mode((W, H))
 clock = pygame.time.Clock()
 
 
-br_surf = pygame.image.load('2.png')
+br_surf = pygame.image.load(r'images\2.png')
 br_scale = pygame.transform.scale(br_surf, ((int)(br_surf.get_width() * 1.50 * (int)(W / 800)),
                                             (int)(br_surf.get_height() * 1.50) * (int)(H / 600)))
 br_rect = br_scale.get_rect(bottomleft=(0, H))
@@ -130,7 +131,9 @@ while True:
             or (pos[0] >= p4_l[0] and pos[1] <= p6_l[1] and isPointUnder(p4_l, p5_l, pos)):
         if flag:
             print(1)
-            #место для перехода на Уровни
+            levels = Levels(sc, W, H)
+            levels.update()
+            pygame.display.update()
         motion = ON_LEVELS
     else:
         motion = NOT
