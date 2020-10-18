@@ -15,7 +15,7 @@ YELLOW = (255, 255, 0)
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.width = 75
+        self.width = 85
         self.height = 15
         self.image = pygame.Surface((self.width, self.height))
         self.image.fill(BLACK)
@@ -26,8 +26,8 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.screenheight = pygame.display.get_surface().get_height()
         self.rect.x = W // 2 -25
-        self.rect.y = self.screenheight - self.height
-        self.speed = 12
+        self.rect.y = self.screenheight - self.height-15
+        self.speed = 10
 
     def update(self):
         key = pygame.key.get_pressed()
@@ -44,3 +44,4 @@ class Player(pygame.sprite.Sprite):
             self.rect.left = 0
         elif self.rect.right > W:
             self.rect.right = W
+
