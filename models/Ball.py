@@ -15,8 +15,8 @@ YELLOW = (255, 255, 0)
 
 
 class Ball(pygame.sprite.Sprite):
-    direction = 200
-    speed = 10
+    direction = 180
+    speed = 4
     x = 380.0
     y = 460.0
 
@@ -38,15 +38,16 @@ class Ball(pygame.sprite.Sprite):
 
     def bouncy(self, diff):
         self.direction = (180 - self.direction) % 360
+
         self.direction -= diff
-        print(self.direction)
+
 
     def speed_bot(self):
         key = pygame.key.get_pressed()
         if key[pygame.K_SPACE]:
-            self.speed = 18
+            self.speed = 12
         else:
-            self.speed = 10
+            self.speed = 8
 
     def update(self):
         self.speed_bot()
@@ -69,3 +70,4 @@ class Ball(pygame.sprite.Sprite):
         if self.x > self.screenwidth - self.width:
             self.direction = (360 - self.direction) % 360
             self.x = self.screenwidth - self.width - 1
+
