@@ -1,5 +1,6 @@
 import pygame
 from Level import Level
+from MainProcess import MainProcess
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -48,15 +49,27 @@ class Levels:
                     if (pos[0] >= self.w // 5 * 4 and pos[0] <= self.w // 5 *  + self.w // 7 and pos[1] <= self.h // 13 * 12
                             and pos[1] >= self.h // 13 * 12 - self.h // 6):
                         flag = False
+                    for i in range(0, 5):
+                        x = pos[0] - levels[i].c_W
+                        y = pos[1] - levels[i].c_H
+                        if (x * x) + (y * y) <= levels[i].r * levels[i].r // 10 * 3:
+                            if pygame.MOUSEBUTTONDOWN:
+                                level = i + 1
+                                breakOut = MainProcess(level)
+                                breakOut.start()
+
 
             pos = pygame.mouse.get_pos()
             motion = -1
 
             for i in range(0, 5):
+
                 x = pos[0] - levels[i].c_W
                 y = pos[1] - levels[i].c_H
                 if (x * x) + (y * y) <= levels[i].r * levels[i].r // 10 * 3:
                     motion = i
+
+
 
 
             if motion != -1 and motion != pr_motion and pr_motion != -1:
@@ -64,6 +77,7 @@ class Levels:
                 levels[pr_motion].smaller()
                 pr_motion = motion
                 pygame.display.update()
+
 
             if motion == -1 and pr_motion !=-1:
                 levels[pr_motion].smaller()

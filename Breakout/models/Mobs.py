@@ -23,7 +23,7 @@ class Mobs(pygame.sprite.Sprite):
         br_scale = pygame.transform.scale(br_surf, (width, height))
         br_rect = br_scale.get_rect(bottomleft=(0, height))
         self.image.blit(br_scale, br_rect)
-        
+
 
         self.rect = self.image.get_rect()
 

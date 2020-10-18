@@ -1,4 +1,4 @@
-from Breakout.Mobs import Mobs
+from Breakout.models.Mobs import Mobs
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
