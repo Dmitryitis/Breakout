@@ -48,7 +48,7 @@ class Levels:
                     pos = pygame.mouse.get_pos()
                     if (pos[0] >= self.w // 5 * 4 and pos[0] <= self.w // 5 *  + self.w // 7 and pos[1] <= self.h // 13 * 12
                             and pos[1] >= self.h // 13 * 12 - self.h // 6):
-                        flag = False
+                        return
                     for i in range(0, 5):
                         x = pos[0] - levels[i].c_W
                         y = pos[1] - levels[i].c_H
@@ -57,6 +57,7 @@ class Levels:
                                 level = i + 1
                                 breakOut = MainProcess(level)
                                 breakOut.start()
+                                return
 
 
             pos = pygame.mouse.get_pos()

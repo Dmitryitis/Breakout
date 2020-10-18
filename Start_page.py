@@ -1,6 +1,7 @@
 import pygame
 
 from Levels import Levels
+from MainProcess import MainProcess
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -126,8 +127,11 @@ class Start_page():
                     or (pos[0] <= p2_s[0] and  isPointUnder(p1_s, p2_s, pos) and not isPointUnder(p1_s, p6_s, pos))\
                     or (pos[0] >= p3_s[0] and isPointUnder(p3_s, p4_s, pos) and not isPointUnder(p4_s, p5_s, pos)):
                 if flag:
-                    #запуск текущего уровня
-                    print(1)
+                    breakOut = MainProcess(1)
+                    breakOut.start()
+                    sc.fill(BLACK)
+                    making_picture(sc)
+                    pygame.display.update()
                     flag = False
                 self.motion = ON_START
             elif (pos[0] >=  p1_l[0] and pos[0] <= p4_l[0] and pos[1] >= p2_l[1] and pos[1] <= p6_l[1]) \

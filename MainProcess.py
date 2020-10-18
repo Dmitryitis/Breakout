@@ -1,14 +1,13 @@
 import pygame
 
 from models.Ball import Ball
-from models.Mobs import Mobs
 from models.Player import Player
 from all_levels.L1 import L1
 from all_levels.L2 import L2
 from all_levels.L3 import L3
 from all_levels.L4 import L4
 from all_levels.L5 import L5
-from Start_page import Start_page
+# from Start_page import Start_page
 
 pygame.init()
 pygame.mixer.init()
@@ -108,8 +107,9 @@ class MainProcess:
                         pygame.display.update()
                         pygame.time.wait(1000)
                         game_end = False
-                        start_page = Start_page()
-                        start_page.start()
+                        # start_page = Start_page()
+                        # TODO
+                        return
 
                 if pygame.sprite.collide_mask(player, bal):
                     # diff = (player.rect.x + player.width / 2) - (bal.rect.x + bal.width / 2)
@@ -138,9 +138,13 @@ class MainProcess:
                         sc.blit(text, (200, 300))
                         pygame.display.flip()
                         pygame.time.wait(1000)
+                        if self.level < 5:
+                            m = MainProcess(self.level + 1)
+                            m.start()
+                        else:
 
-                        game_end = False
-                        exit()
+                            game_end = False
+                            return
 
             sc.fill(BLACK)
             all_sprites.draw(sc)
@@ -148,7 +152,7 @@ class MainProcess:
             if not start_game:
                 f4 = pygame.font.SysFont('arial', 40)
                 text4 = f4.render("Press space to start", 1, BLUE)
-                sc.blit(text4, (250, 300))
+                sc.blit(text4, (230, 300))
 
             f3 = pygame.font.SysFont('arial', 32)
             text3 = f3.render("Lifes: " + str(lives), 1, BLUE)
@@ -157,7 +161,7 @@ class MainProcess:
 
             if int(record_score) < score:
                 text5 = f5.render("New score: " + str(score), 1, BLUE)
-                sc.blit(text5, (400, 10))
+                sc.blit(text5, (350, 10))
             else:
                 text5 = f5.render("Score: " + str(score), 1, BLUE)
                 sc.blit(text5, (450, 10))
