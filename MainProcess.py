@@ -86,7 +86,7 @@ class MainProcess:
             if start_game:
                 all_sprites.update()
 
-                if bal.rect.y > H - 10:
+                if bal.rect.y+10 > H - 13:
                     lives -= 1
                     pygame.time.wait(600)
 
@@ -94,7 +94,7 @@ class MainProcess:
                     bal.x = 380
                     bal.y = 460
                     player.rect.x = W // 2 - 25
-                    bal.direction = 200
+                    bal.direction = 180
                     bal.bouncy(-180)
                     all_sprites.update()
                     all_sprites.draw(sc)
@@ -112,11 +112,9 @@ class MainProcess:
                         return
 
                 if pygame.sprite.collide_mask(player, bal):
-                    # diff = (player.rect.x + player.width / 2) - (bal.rect.x + bal.width / 2)
-
-                    bal.rect.y = H - player.rect.height - bal.rect.height
-
-                    bal.bouncy(0)
+                    diff = (player.rect.x + player.width / 2) - (bal.rect.x + bal.width / 2+10)
+                    # bal.rect.y = H - player.rect.height - bal.rect.height-10
+                    bal.bouncy(diff)
 
                 break_collision = pygame.sprite.spritecollide(bal, all_bricks, False)
 
@@ -170,3 +168,4 @@ class MainProcess:
 
             pygame.display.flip()
             clock.tick(FPS)
+
