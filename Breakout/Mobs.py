@@ -15,11 +15,15 @@ YELLOW = (255, 255, 0)
 class Mobs(pygame.sprite.Sprite):
     def __init__(self, color, width, height):
         pygame.sprite.Sprite.__init__(self)
+
         self.image = pygame.Surface((width, height))
         self.image.fill(BLACK)
         self.image.set_colorkey(BLACK)
-        self.color = color
-        pygame.draw.rect(self.image, color, (0, 0, width, height))
+        br_surf = pygame.image.load("images/mobs/" + color + ".png")
+        br_scale = pygame.transform.scale(br_surf, (width, height))
+        br_rect = br_scale.get_rect(bottomleft=(0, height))
+        self.image.blit(br_scale, br_rect)
+        
 
         self.rect = self.image.get_rect()
 
