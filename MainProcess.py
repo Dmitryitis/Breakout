@@ -152,9 +152,10 @@ class MainProcess:
                 text4 = f4.render("Press space to start", 1, BLUE)
                 sc.blit(text4, (230, 300))
 
-            f3 = pygame.font.SysFont('arial', 32)
-            text3 = f3.render("Lifes: " + str(lives), 1, BLUE)
-            sc.blit(text3, (50, 10))
+            for i in range(0, lives):
+                pygame.draw.circle(sc, RED, (25 + i * 45, 25), 20)
+
+
             f5 = pygame.font.SysFont('arial', 32)
 
             if int(record_score) < score:
@@ -167,5 +168,6 @@ class MainProcess:
             sc.blit(text6, (610, 10))
 
             pygame.display.flip()
+            pygame.display.update()
             clock.tick(FPS)
 
