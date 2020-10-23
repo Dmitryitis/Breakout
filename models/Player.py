@@ -25,7 +25,8 @@ class Player(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
         self.screenheight = pygame.display.get_surface().get_height()
-        self.rect.x = W // 2 -25
+        self.x = W // 2 -25
+        self.rect.x = self.x
         self.rect.y = self.screenheight - self.height-15
         self.speed = 10
 
@@ -45,3 +46,11 @@ class Player(pygame.sprite.Sprite):
         elif self.rect.right > W:
             self.rect.right = W
 
+    def start(self):
+        if self.rect.right > W:
+            self.rect.right = W-10
+
+        elif self.rect.left < 0:
+            self.rect.x = 0
+        else:
+            self.rect.x = self.x
