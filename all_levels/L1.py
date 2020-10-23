@@ -8,10 +8,11 @@ YELLOW = (255, 255, 0)
 w = 70
 d = 25
 class L1:
-    def __init__(self, mobs, all_sprites, all_bricks):
+    def __init__(self, mobs, all_sprites, all_bricks,bricks_group):
         self.mobs = mobs
         self.all_sprites = all_sprites
         self.all_bricks = all_bricks
+        self.bricks_group = bricks_group
 
     def writePix(self, x, y, color):
         m = Mobs(color, 70, 25)
@@ -20,6 +21,7 @@ class L1:
         self.mobs.add(m)
         self.all_sprites.add(m)
         self.all_bricks.add(m)
+        self.bricks_group.add(m)
 
     def start(self):
 
