@@ -89,7 +89,9 @@ class Start_page():
                                                    (int)(surf_start.get_height() / 600 * H)))
         sc.blit(scale_surf_start, (surf_start_x, surf_start_y))
 
-
+        sound_button = pygame.mixer.Sound(r'music/button.wav')
+        pygame.mixer.music.load(r'music/fon1.mp3')
+        pygame.mixer.music.play(-1)
         #иконка LEVELS
         surf_level_x = p2_l[0]
         surf_level_y = p2_l[1]
@@ -127,6 +129,7 @@ class Start_page():
                     or (pos[0] <= p2_s[0] and  isPointUnder(p1_s, p2_s, pos) and not isPointUnder(p1_s, p6_s, pos))\
                     or (pos[0] >= p3_s[0] and isPointUnder(p3_s, p4_s, pos) and not isPointUnder(p4_s, p5_s, pos)):
                 if flag:
+                    sound_button.play()
                     breakOut = MainProcess(1)
                     breakOut.start()
                     sc.fill(BLACK)
@@ -140,7 +143,7 @@ class Start_page():
                     or (pos[0] >= p4_l[0] and pos[1] >= p2_l[1] and not isPointUnder(p4_l, p3_l, pos)) \
                     or (pos[0] >= p4_l[0] and pos[1] <= p6_l[1] and isPointUnder(p4_l, p5_l, pos)):
                 if flag:
-                    print(1)
+                    sound_button.play()
                     levels = Levels(sc, W, H)
                     levels.update()
                     sc.fill(BLACK)

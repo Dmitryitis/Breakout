@@ -8,8 +8,6 @@ from all_levels.L3 import L3
 from all_levels.L4 import L4
 from all_levels.L5 import L5
 
-# from Start_page import Start_page
-
 pygame.init()
 pygame.mixer.init()
 
@@ -41,6 +39,7 @@ class MainProcess:
         heart_img = pygame.image.load(r'images/heart.png')
         heart_trans = pygame.transform.scale(heart_img, (30, 30))
 
+
         all_sprites = pygame.sprite.Group()
         mobs = pygame.sprite.Group()
         ball = pygame.sprite.Group()
@@ -59,6 +58,13 @@ class MainProcess:
         lives = 5
         # score = 0
         record_score = ""
+
+        pygame.mixer.music.load(r'music/fon2.mp3')
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(0.5)
+        sound_udar = pygame.mixer.Sound(r'music/udar.wav')
+        sound_gameover = pygame.mixer.Sound(r'music/gameover.wav')
+        sound_button = pygame.mixer.Sound(r'music/gameover.wav')
 
         rec = open('score.txt', 'r')
         for r in rec:
@@ -79,12 +85,25 @@ class MainProcess:
         itsLevel.start()
         game_end = True
         start_game = False
+        pause_flag = False
         while game_end:
             events = pygame.event.get()
             for event in events:
                 if event.type == pygame.QUIT:
                     game_end = False
                     exit()
+                pos = pygame.mouse.get_pos()
+
+                if event.type == pygame.MOUSEBUTTONDOWN and pos[0] > 5 and pos[0] < 40 and pos[1] > 10 and pos[1] < 45:
+                    sound_button.play()
+                    if pause_flag:
+                        pause_flag = False
+                    else:
+                        pause_flag = True
+
+            if pause_flag:
+                continue
+
 
             key = pygame.key.get_pressed()
 
@@ -111,15 +130,18 @@ class MainProcess:
 
                     if lives == 0:
                         surf = pygame.image.load(r'images/gameover.jpg')
+                        pygame.mixer.music.pause()
+                        sound_gameover.play()
+                        pygame.mixer.music.unpause()
                         scale = pygame.transform.scale(surf, (800, 600))
                         rect = scale.get_rect(bottomleft=(0, 600))
                         sc.blit(scale, rect)
                         pygame.display.update()
                         pygame.time.wait(1000)
                         game_end = False
-                        # start_page = Start_page()
-                        # TODO
-                        return
+                        m = MainProcess(self.level)
+                        m.start()
+                        break
 
                 if pygame.sprite.collide_rect(player, bal):
                     print(bal.rect.bottom)
@@ -134,6 +156,7 @@ class MainProcess:
                 break_collision = pygame.sprite.spritecollide(bal, all_bricks, False)
 
                 if break_collision:
+                    sound_udar.play()
                     hit_rect = break_collision[0].rect
                     if hit_rect.left > bal.rect.left or bal.rect.right > hit_rect.right:
                         bal.vertical(0)
@@ -146,23 +169,28 @@ class MainProcess:
 
                     hits = pygame.sprite.spritecollide(bal, bricks_group, True)
 
-                    if len(all_bricks) == 0:
+                    if pygame.key.get_pressed()[pygame.K_0]:
+                        for sp in all_bricks:
+                            sp.kill()
+
+
+                    if len(all_bricks) == 0 :
                         if int(record_score) < self.score:
                             wr = open('score.txt', 'w')
                             wr.write(str(self.score))
 
-                        f2 = pygame.font.SysFont('arial', 60)
-                        text = f2.render("Level Complete", 1, WHITE)
-                        sc.blit(text, (200, 300))
-                        pygame.display.flip()
+                        surf = pygame.image.load(r'images/levelCompleted.png')
+                        scale = pygame.transform.scale(surf, (400, 300))
+                        rect = scale.get_rect(bottomleft=(200, 450))
+                        sc.blit(scale, rect)
+                        pygame.display.update()
                         pygame.time.wait(1000)
                         if self.level < 5:
                             m = MainProcess(self.level + 1)
                             m.start()
                         else:
-
                             game_end = False
-                            return
+                        break
 
                 # for brick in break_collision:
                 #     if len(all_bricks) > 0:
@@ -192,6 +220,8 @@ class MainProcess:
 
             sc.fill(BLACK)
             sc.blit(surf_bg, surf_rect)
+            pygame.draw.rect(sc, GREEN, (10, 15, 10, 30))
+            pygame.draw.rect(sc, GREEN, (25, 15, 10, 30))
             all_sprites.draw(sc)
 
             if not start_game:
@@ -219,19 +249,17 @@ class MainProcess:
                         bal.x -= 10
                         player.x -= 10
 
-            f3 = pygame.font.SysFont('arial', 32)
             for i in range(0, lives):
-                sc.blit(heart_trans, (25 + i * 45, 25))
-                # pygame.draw.circle(sc, RED, (25 + i * 45, 25), 20)
-            f5 = pygame.font.SysFont('arial', 32)
+                sc.blit(heart_trans, (65 + i * 45, 15))
 
+            f = pygame.font.SysFont('arial', 32)
             if int(record_score) < self.score:
-                text5 = f5.render("New score: " + str(self.score), 1, GREEN)
+                text5 = f.render("New score: " + str(self.score), 1, GREEN)
                 sc.blit(text5, (350, 10))
             else:
-                text5 = f5.render("Score: " + str(self.score), 1, GREEN)
+                text5 = f.render("Score: " + str(self.score), 1, GREEN)
                 sc.blit(text5, (450, 10))
-            text6 = f5.render("Record: " + record_score, 1, GREEN)
+            text6 = f.render("Record: " + record_score, 1, GREEN)
             sc.blit(text6, (610, 10))
 
             pygame.display.flip()

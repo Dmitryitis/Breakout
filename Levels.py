@@ -40,6 +40,10 @@ class Levels:
         pygame.display.update()
         flag = True
         pr_motion = -1
+        sound_button = pygame.mixer.Sound(r'music/button.wav')
+        pygame.mixer.music.load(r'music/fon1.mp3')
+        pygame.mixer.music.play(-1)
+
         while flag:
             for i in pygame.event.get():
                 if i.type == pygame.QUIT:
@@ -54,6 +58,7 @@ class Levels:
                         y = pos[1] - levels[i].c_H
                         if (x * x) + (y * y) <= levels[i].r * levels[i].r // 10 * 3:
                             if pygame.MOUSEBUTTONDOWN:
+                                sound_button.play()
                                 level = i + 1
                                 breakOut = MainProcess(level)
                                 breakOut.start()
